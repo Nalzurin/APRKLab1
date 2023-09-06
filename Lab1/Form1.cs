@@ -222,7 +222,7 @@ namespace Lab1
             }
             else
             {
-                nz1 = U;
+                nz1 = Spin;
 
             }
             logBox.Items.Add($"nz1 = {nz1}");
@@ -261,14 +261,30 @@ namespace Lab1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (valT.Text == null || valN.Text == null || valN.Text == null || valNC.Text == null)
+            if(HasBelt.Checked)
             {
-                logBox.Items.Add("Error: One or more of the required input fields is empty");
+                if (valT.Text == null || valN.Text == null || valU.Text == null || valNC.Text == null)
+                {
+                    logBox.Items.Add("Error: One or more of the required input fields is empty");
+                }
+                else
+                {
+                    Calculate();
+                }
             }
             else
             {
-                Calculate();
+                if (valT.Text == null || valN.Text == null || valNC.Text == null)
+                {
+                    logBox.Items.Add("Error: One or more of the required input fields is empty");
+                }
+                else
+                {
+                    Calculate();
+                }
             }
+           
+            
 
         }
 
@@ -276,9 +292,9 @@ namespace Lab1
         {
             GearPowerCalc(int.Parse(valT.Text), int.Parse(valN.Text), HasBelt.Checked);
             (string Name, double Power, double Spin) engine = EngineSearcher(int.Parse(valNC.Text), powerReq);
-            GearRatioCalculator(engine.Spin, double.Parse(valN.Text), double.Parse(valU.Text), HasBelt.Checked);
+            GearRatioCalculator(engine.Spin, double.Parse(valN.Text), HasBelt.Checked ? double.Parse(valU.Text) : 0d, HasBelt.Checked);
             DrivePowerCalculator(engine.Power, HasBelt.Checked);
-            SpinCalculator(engine.Spin, double.Parse(valU.Text), double.Parse(valN.Text), HasBelt.Checked);
+            SpinCalculator(engine.Spin, HasBelt.Checked ? double.Parse(valU.Text) : 0d, double.Parse(valN.Text), HasBelt.Checked);
             TorqueCalculator(double.Parse(valT.Text), HasBelt.Checked);
         }
     }
